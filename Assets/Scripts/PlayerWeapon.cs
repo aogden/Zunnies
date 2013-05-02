@@ -75,7 +75,7 @@ public class PlayerWeapon : MonoBehaviour {
 		bool hitEnemy = false;
 		if (hit.collider.gameObject.tag == "Enemy") {
 			try{
-				Enemy e = hit.collider.gameObject.GetComponent<Enemy>();
+				Damageable e = hit.collider.gameObject.GetComponent<Damageable>();
 				e.Damage(-hit.normal, hit.point);
 				hitEnemy = true;
 			}catch{

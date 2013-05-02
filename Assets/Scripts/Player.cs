@@ -23,6 +23,8 @@ public class Player : MonoBehaviour {
 	private float _rotY;
 	private Quaternion _initialCameraRot;
 	
+	private Damageable _damageableComponent;
+	
 	#region Unity Lifecycle
 	void Start () {
 
@@ -42,6 +44,13 @@ public class Player : MonoBehaviour {
 		// Set default render settings
 		DefaultFog();
 		DefaultClipping();
+		
+		//Attach our damage listeners
+		_damageableComponent = GetComponent<Damageable>();
+		if(_damageableComponent != null)
+		{
+			_damageableComponent.OnDamage += Damage;
+		}
 
 		// Fall to ground if Camera was placed too high
 		Move(Vector3.up, 0.0f);
@@ -110,6 +119,12 @@ public class Player : MonoBehaviour {
 		Quaternion xQuaternion = Quaternion.AngleAxis(_rotX, Vector3.up);
 		Quaternion yQuaternion = Quaternion.AngleAxis(_rotY, Vector3.left);
 		_cam.transform.localRotation = _initialCameraRot * xQuaternion * yQuaternion;
+	}
+	#endregion
+	
+	#region EventHandlers
+	private void Damage(Vector3 impactDirection, Vector3 impactPosition){
+
 	}
 	#endregion
 }

@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour {
 	private float _timeDead;
 	private bool _dead;
 	
+	private Damageable _damageableComponent;
+	
 	#region Unity Lifecycle
 	void Awake(){
 		this.GetComponent<MeshRenderer>().enabled = false;
@@ -26,6 +28,14 @@ public class Enemy : MonoBehaviour {
 		if (_player == null){
 			Debug.LogError("Enemy: Start: cant find player");
 			return;
+		}
+		
+		//Attach our damage listeners
+		_damageableComponent = GetComponent<Damageable>();
+		if(_damageableComponent != null)
+		{
+			_damageableComponent.OnDamage += Damage;
+			_damageableComponent.OnExplosion += Explode;
 		}
 
 		// Make sure this doesn't spawn in the air
@@ -94,16 +104,25 @@ public class Enemy : MonoBehaviour {
 		Ragdoll();
 		this.rigidbody.AddExplosionForce(force, center, radius);
 	}
+	private void Die()
+	{
+		_dead = true;
+		if(_damageableComponent != null)
+		{
+			_damageableComponent.OnDamage -= Damage;
+			_damageableComponent.OnExplosion -= Explode;
+		}
+	}
 	#endregion
 
-	#region Exposed
-	public void Damage(Vector3 impactDirection, Vector3 impactPosition){
+	#region Delegates
+	private void Damage(Vector3 impactDirection, Vector3 impactPosition){
 		AnimateBulletImpact(impactDirection, impactPosition);
-		_dead = true;
+		Die ();
 	}
-	public void Explode(Vector3 explosionCenter, float explosionForce, float explosionRadius){
+	private void Explode(Vector3 explosionCenter, float explosionForce, float explosionRadius){
 		AnimateExplosion(explosionCenter, explosionForce, explosionRadius);
-		_dead = true;
+		Die ();
 	}
 	#endregion
 }
