@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour {
 		{
 			_damageableComponent.OnDamage += Damage;
 			_damageableComponent.OnExplosion += Explode;
+			_damageableComponent.OnDie += Die;
 		}
 
 		// Make sure this doesn't spawn in the air
@@ -111,18 +112,24 @@ public class Enemy : MonoBehaviour {
 		{
 			_damageableComponent.OnDamage -= Damage;
 			_damageableComponent.OnExplosion -= Explode;
+			_damageableComponent.OnDie -= Die;
 		}
 	}
 	#endregion
 
-	#region Delegates
+	#region EventHandlers
 	private void Damage(Vector3 impactDirection, Vector3 impactPosition){
 		AnimateBulletImpact(impactDirection, impactPosition);
-		Die ();
 	}
 	private void Explode(Vector3 explosionCenter, float explosionForce, float explosionRadius){
 		AnimateExplosion(explosionCenter, explosionForce, explosionRadius);
-		Die ();
+	}
+	private void OnTriggerEnter(Collider other)
+	{
+		if(other.gameObject.tag == "MainCamera")
+		{
+			other.gameObject.GetComponent<Damageable>().Damage(Vector3.zero,Vector3.zero);
+		}
 	}
 	#endregion
 }

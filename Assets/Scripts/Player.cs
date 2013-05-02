@@ -124,7 +124,7 @@ public class Player : MonoBehaviour {
 	
 	#region EventHandlers
 	private void Damage(Vector3 impactDirection, Vector3 impactPosition){
-
+		Debug.Log("PLAYER DAMAGE");
 	}
 	#endregion
 }
