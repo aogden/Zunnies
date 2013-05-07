@@ -107,6 +107,10 @@ public class Enemy : MonoBehaviour {
 	}
 	private void Die()
 	{
+		if(_player != null)
+		{
+			_player.OnKill(this);
+		}
 		_dead = true;
 		if(_damageableComponent != null)
 		{

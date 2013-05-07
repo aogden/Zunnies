@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
 	private Quaternion _initialCameraRot;
 	
 	private Damageable _damageableComponent;
+	private float _score;
 	
 	#region Unity Lifecycle
 	void Start () {
@@ -125,6 +126,17 @@ public class Player : MonoBehaviour {
 	#region EventHandlers
 	private void Damage(Vector3 impactDirection, Vector3 impactPosition){
 		Debug.Log("PLAYER DAMAGE");
+	}
+	public void OnKill(Enemy killedEnemy)
+	{
+		_score ++;
+	}
+	#endregion
+	
+	#region Accessors
+	public float GetScore()
+	{
+		return _score;
 	}
 	#endregion
 }
