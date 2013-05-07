@@ -17,6 +17,11 @@ public class Spawner : MonoBehaviour {
 	}
 
 	void Update () {
+		if(!IsPlayerAlive())
+		{
+			return;
+		}
+		
 		_cooldown -= Time.deltaTime;
 		if (_cooldown < 0.0f){
 			_cooldown = SPAWN_COOLDOWN;
@@ -38,6 +43,20 @@ public class Spawner : MonoBehaviour {
 	public int EnemyCount(){
 		Enemy[] enemies = (Enemy[])GameObject.FindObjectsOfType(typeof(Enemy));
 		return enemies.Length;
+	}
+	public bool IsPlayerAlive()
+	{
+		Player player = (Player)GameObject.FindObjectOfType(typeof(Player));
+		if(player != null)
+		{
+			Damageable playerDamageable = player.GetComponent<Damageable>();
+			if(playerDamageable != null)
+			{
+				return playerDamageable.IsAlive();
+			}
+		}
+		
+		return false;
 	}
 	#endregion
 }

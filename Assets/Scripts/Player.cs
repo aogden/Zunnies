@@ -135,6 +135,7 @@ public class Player : MonoBehaviour {
 	private void Die()
 	{
 		gameObject.AddComponent<GameOverDialog>();
+		EndGame();
 	}
 	public void OnKill(Enemy killedEnemy)
 	{
@@ -146,6 +147,17 @@ public class Player : MonoBehaviour {
 	public float GetScore()
 	{
 		return _score;
+	}
+	#endregion
+	
+	#region Gameplay Helpers
+	private void EndGame()
+	{
+		Enemy[] enemies = (Enemy[])GameObject.FindObjectsOfType(typeof(Enemy));
+		foreach(Enemy enemy in enemies)
+		{
+			Destroy(enemy.gameObject);
+		}
 	}
 	#endregion
 }
