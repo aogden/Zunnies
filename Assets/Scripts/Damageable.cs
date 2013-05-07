@@ -20,6 +20,11 @@ public class Damageable : MonoBehaviour {
 		_currenthealth = MaxHealth;
 	}
 	
+	public float GetCurrentHealth()
+	{
+		return _currenthealth;
+	}
+	
 	public void Damage(Vector3 impactDirection, Vector3 impactPosition)
 	{
 		//report damage to event listeners
