@@ -25,6 +25,11 @@ public class Damageable : MonoBehaviour {
 		return _currenthealth;
 	}
 	
+	public bool IsAlive()
+	{
+		return _currenthealth > 0.0f;
+	}
+	
 	public void Damage(Vector3 impactDirection, Vector3 impactPosition)
 	{
 		//report damage to event listeners

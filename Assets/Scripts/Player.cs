@@ -51,6 +51,7 @@ public class Player : MonoBehaviour {
 		if(_damageableComponent != null)
 		{
 			_damageableComponent.OnDamage += Damage;
+			_damageableComponent.OnDie += Die;
 		}
 
 		// Fall to ground if Camera was placed too high
@@ -58,7 +59,11 @@ public class Player : MonoBehaviour {
 	}
 
 	void Update () {
-
+		if(_damageableComponent != null && !_damageableComponent.IsAlive())
+		{
+			return;
+		}
+		
 		// Let the player look, shoot, and move
 		UpdateLookRotation ();
 		UpdatePosition ();
@@ -126,6 +131,10 @@ public class Player : MonoBehaviour {
 	#region EventHandlers
 	private void Damage(Vector3 impactDirection, Vector3 impactPosition){
 		Debug.Log("PLAYER DAMAGE");
+	}
+	private void Die()
+	{
+		gameObject.AddComponent<GameOverDialog>();
 	}
 	public void OnKill(Enemy killedEnemy)
 	{
