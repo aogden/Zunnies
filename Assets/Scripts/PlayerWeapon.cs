@@ -13,6 +13,7 @@ public class PlayerWeapon : MonoBehaviour {
 
 	private float _shootCooldown;
 	private Camera _cam;
+	private Player _player;
 
 	#region Unity Lifecycle
 	void Start () {
@@ -23,12 +24,21 @@ public class PlayerWeapon : MonoBehaviour {
 			Debug.LogError("PlayerWeapon: Start: could not find required Camera component");
 			return;
 		}
+		
+		_player = GetComponent<Player>();
+		if(_player == null)
+		{
+			Debug.Log("PlayerWeapon: Start: No player component!");
+		}
 	}
 	void Update () {
-		
 		// Press spacebar to shoot
 		if (Input.GetKey(KeyCode.Space)) {
-			Shoot ();
+			if(_player != null && _player.IsAlive())
+			{
+				Shoot();
+			}
+			_player.OnShoot();
 		}
 
 		_shootCooldown -= Time.deltaTime;

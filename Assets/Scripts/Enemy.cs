@@ -130,7 +130,7 @@ public class Enemy : MonoBehaviour {
 	}
 	private void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.tag == "MainCamera")
+		if(other.gameObject.tag == "MainCamera" && _damageableComponent.IsAlive())
 		{
 			other.gameObject.GetComponent<Damageable>().Damage(Vector3.zero,Vector3.zero);
 		}

@@ -25,6 +25,8 @@ public class Player : MonoBehaviour {
 	
 	private Damageable _damageableComponent;
 	private float _score;
+	private Vector3 _spawnLocation;
+	private Quaternion _spawnRotation;
 	
 	#region Unity Lifecycle
 	void Start () {
@@ -53,9 +55,13 @@ public class Player : MonoBehaviour {
 			_damageableComponent.OnDamage += Damage;
 			_damageableComponent.OnDie += Die;
 		}
-
+		
+		//save our spawn place for restart
+		_spawnLocation = transform.position;
+		_spawnRotation = transform.rotation;
+		
 		// Fall to ground if Camera was placed too high
-		Move(Vector3.up, 0.0f);
+		Move(Vector3.up, 0.0f);	
 	}
 
 	void Update () {
@@ -141,12 +147,23 @@ public class Player : MonoBehaviour {
 	{
 		_score ++;
 	}
+	public void OnShoot()
+	{
+		if(!IsAlive())
+		{
+			RestartGame();
+		}
+	}
 	#endregion
 	
 	#region Accessors
 	public float GetScore()
 	{
 		return _score;
+	}
+	public bool IsAlive()
+	{
+		return _damageableComponent.IsAlive();
 	}
 	#endregion
 	
@@ -158,6 +175,17 @@ public class Player : MonoBehaviour {
 		{
 			Destroy(enemy.gameObject);
 		}
+	}
+	private void RestartGame()
+	{
+		GameOverDialog dialog = GetComponent<GameOverDialog>();
+		if(dialog != null)
+		{
+			Destroy(dialog);
+		}
+		_damageableComponent.Restart();
+		transform.position = _spawnLocation;
+		transform.rotation = _spawnRotation;
 	}
 	#endregion
 }

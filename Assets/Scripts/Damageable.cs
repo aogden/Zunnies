@@ -62,5 +62,10 @@ public class Damageable : MonoBehaviour {
 			OnDie();
 		}
 	}
+	
+	public void Restart()
+	{
+		_currenthealth = MaxHealth;
+	}
 }
 
